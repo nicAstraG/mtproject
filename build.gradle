@@ -5,15 +5,15 @@ version '1.0'
 sourceSets.main.java.srcDirs = ["src"]
 
 
-repositories{
+repositories {
     mavenCentral()
-    maven{ url "https://raw.githubusercontent.com/Zelaux/MindustryRepo/master/repository" }
-    maven{ url 'https://www.jitpack.io' }
-    }
+    maven { url 'https://www.jitpack.io' }
+    maven { url 'https://raw.githubusercontent.com/Zelaux/MindustryRepo/master/repository' }
+}
 
-java{
-    targetCompatibility = 8
+java {
     sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = 8
 }
 
 ext{
@@ -27,23 +27,22 @@ ext{
 
 //java 8 backwards compatibility flag
 allprojects{
-    tasks.withType(JavaCompile){
-        options.compilerArgs.addAll(['--release', '8'])
+    tasks.withType(JavaCompile).tap {
+        configureEach {
+            options.compilerArgs.addAll(['--release', '8'])
+        }
     }
 }
 
-dependencies{
-    implementation 'com.github.liplum:MultiCrafterLib:v1.8'
+dependencies {
     compileOnly "com.github.Anuken.Arc:arc-core:$mindustryVersion"
     compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"
 
     annotationProcessor "com.github.Anuken:jabel:$jabelVersion"
 }
 
-
-
 //force arc version
-configurations.all{
+configurations.configureEach{
     resolutionStrategy.eachDependency { details ->
         if(details.requested.group == 'com.github.Anuken.Arc'){
             details.useVersion "$mindustryVersion"
@@ -51,7 +50,7 @@ configurations.all{
     }
 }
 
-task jarAndroid{
+tasks.register('jarAndroid') {
     dependsOn "jar"
 
     doLast{
@@ -72,33 +71,29 @@ task jarAndroid{
     }
 }
 
-jar{
-    archiveFileName = "${base.archivesBaseName}Desktop.jar"
-
-    from{
-        configurations.runtimeClasspath.collect{ it.isDirectory() ? it : zipTree(it) }
+jar {
+    archiveFileName = 'MilitaryTechnologyDesktop.jar'
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
-
     from(projectDir){
         include "mod.hjson"
     }
-
     from("assets/"){
         include "**"
     }
-}
 
-task deploy(type: Jar){
+    tasks.register('deploy', Jar){
     dependsOn jarAndroid
     dependsOn jar
-    archiveFileName = "${base.archivesBaseName}.jar"
+    archiveFileName = "MilitaryTechnologyDesktop.jar"
 
-    from{ [zipTree("$buildDir/libs/${project.archivesBaseName}Desktop.jar"), zipTree("$buildDir/libs/${project.archivesBaseName}Android.jar")] }
+    from{ [zipTree("$buildDir/libs/MilitaryTechnologyDesktop.jar"), zipTree("$buildDir/MilitaryTechnologyAndroid.jar")] }
 
     doLast{
         delete{
-            delete "$buildDir/libs/${project.archivesBaseName}Desktop.jar"
-            delete "$buildDir/libs/${project.archivesBaseName}Android.jar"
+            delete "$buildDir/libs/MilitaryTechnologyDesktop.jar"
+            delete "$buildDir/libs/MilitaryTechnologyAndroid.jar"
         }
     }
-}
+}}

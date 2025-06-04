@@ -3,6 +3,6 @@ author: "nicAstraG"
 name: "military-technology"
 main: "militarytechnology.MilitaryTechnology"
 description: This mod adds many new unique turrets with their respective ammunition, enhanced realism, custom sounds, and effects. Weapons are named using their real declassified names (ammunition excluded).
-version: 0.0.1 (development)
+version: 0.0.2 (development)
 minGameVersion: 146
 java: true
