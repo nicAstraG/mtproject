@@ -16,6 +16,7 @@ import mindustry.world.blocks.defense.Wall;
 import mindustry.world.blocks.defense.turrets.ItemTurret;
 import mindustry.world.blocks.environment.OreBlock;
 import mindustry.world.blocks.power.ConsumeGenerator;
+import mindustry.world.blocks.power.ImpactReactor;
 import mindustry.world.blocks.production.AttributeCrafter;
 import mindustry.world.blocks.production.GenericCrafter;
 import mindustry.world.blocks.production.Separator;
@@ -240,15 +241,18 @@ public class MTBlocks {
                     MTItems.depletedThorium, 6,
                     MTItems.enrichedThorium, 1);
 
-            craftTime = 300f;
+            craftTime = 210f;
             size = 4;
             hasPower = true;
             hasItems = true;
+            hasLiquids = true;
             itemCapacity = 50;
+            liquidCapacity = 20;
             ambientSound = Sounds.techloop;
             ambientSoundVolume = 0.02f;
 
-            consumeItem(Items.thorium, 10);
+            consumeItem(Items.thorium, 4);
+            consumeLiquid(Liquids.water, 0.6f);
             consumePower(11f);
         }};
 
@@ -289,7 +293,7 @@ public class MTBlocks {
 
             craftEffect = Fx.formsmoke;
             outputItem = new ItemStack(MTItems.casingAlloy, 6);
-            craftTime = 15f;
+            craftTime = 75f;
             size = 3;
             hasPower = true;
             hasItems = true;
@@ -579,7 +583,7 @@ public class MTBlocks {
                                 Seq.with(ItemStack.with(MTItems.ap120, 5)),
                                 Seq.with()
                         );
-                        craftTime = 180f;
+                        craftTime = 210f;
                     }},
                     new Recipe(){{
                         input = new IOEntry(
@@ -590,7 +594,7 @@ public class MTBlocks {
                                 Seq.with(ItemStack.with(MTItems.he120, 5)),
                                 Seq.with()
                         );
-                        craftTime = 180f;
+                        craftTime = 210f;
                     }}
             );
 
@@ -598,8 +602,8 @@ public class MTBlocks {
         }};
 
         ammoAssemblerA = new MultiCrafter("ammo-assembler-a") {{
-            localizedName = "Large Caliber Ammunition Assembler";
-            description = "Assembles various Large caliber ammunitions using more refined materials.";
+            localizedName = "Artillery Shell Assembler";
+            description = "Assembles large to huge artillery ammunition using a lot of materials.";
             requirements(Category.crafting, with(
                     MTItems.ironIngot, 140,
                     Items.copper, 200,
@@ -641,7 +645,7 @@ public class MTBlocks {
                                 Seq.with()
                         );
                         output = new IOEntry(
-                                Seq.with(ItemStack.with(MTItems.he155, 5)),
+                                Seq.with(ItemStack.with(MTItems.he305, 5)),
                                 Seq.with()
                         );
                         craftTime = 660f;
@@ -924,7 +928,7 @@ public class MTBlocks {
             requirements(Category.defense, with(MTItems.t2Composite, 6, Items.plastanium, 2, Items.phaseFabric, 2));
             health = 250 * wallHealthMultiplier;
             armor = 20f;
-            chanceDeflect = 10f;
+            chanceDeflect = 4f;
             flashHit = true;
             absorbLasers = true;
             schematicPriority = 10;
@@ -937,7 +941,7 @@ public class MTBlocks {
             health = 250 * wallHealthMultiplier * 4;
             armor = 20f;
             size = 2;
-            chanceDeflect = 10f;
+            chanceDeflect = 4f;
             flashHit = true;
             absorbLasers = true;
             schematicPriority = 10;
@@ -949,7 +953,7 @@ public class MTBlocks {
             requirements(Category.defense, with(MTItems.t3Composite, 6, Items.surgeAlloy, 6, Items.phaseFabric, 8));
             health = 800 * wallHealthMultiplier;
             armor = 60f;
-            chanceDeflect = 1f;
+            chanceDeflect = 12f;
             flashHit = true;
             absorbLasers = true;
             lightningChance = 0.1f;
@@ -963,10 +967,10 @@ public class MTBlocks {
             health = 800 * wallHealthMultiplier * 4;
             armor = 60f;
             size = 2;
-            chanceDeflect = 0.85f;
+            chanceDeflect = 12f;
             flashHit = true;
             absorbLasers = true;
-            lightningChance = 0.65F;
+            lightningChance = 0.25f;
             schematicPriority = 10;
         }};
 
@@ -1022,7 +1026,7 @@ public class MTBlocks {
 
         dieselGeneratorS = new ConsumeGenerator("diesel-generator-s") {{
             localizedName = "Small Diesel Engine";
-            description = "Compact power source, runs on diesel or heavy fuel oil or raw oil. Outputs tar as byproduct from heavy duty oil.";
+            description = "Compact power source, runs on diesel or heavy fuel oil or raw oil.";
 
             requirements(Category.power, with(
                     MTItems.ironIngot, 20,
@@ -1036,7 +1040,7 @@ public class MTBlocks {
 
             consume(new ConsumeLiquidFilter(
                     liquid -> liquid == Liquids.oil || liquid == MTLiquids.diesel || liquid == MTLiquids.heavyFuelOil,
-                    80f / 60f
+                    8f / 60f
             ));
 
             ambientSound = Sounds.hum;
@@ -1072,13 +1076,13 @@ public class MTBlocks {
             description = "Heavy-duty engine, uses diesel or heavy fuel oil with higher power output.";
 
             requirements(Category.power, with(
-                    MTItems.ironIngot, 400,
-                    MTItems.aluminiumIngot, 250,
-                    MTItems.steelIngot, 200,
-                    Items.copper, 600,
-                    Items.lead, 250,
-                    Items.silicon, 400,
-                    Items.graphite, 300,
+                    MTItems.ironIngot, 200,
+                    MTItems.aluminiumIngot, 150,
+                    MTItems.steelIngot, 100,
+                    Items.copper, 400,
+                    Items.lead, 200,
+                    Items.silicon, 130,
+                    Items.graphite, 220,
                     Items.metaglass, 40
             ));
 
@@ -1095,19 +1099,20 @@ public class MTBlocks {
             ambientSoundVolume = 0.04f;
         }};
 
-        shipEngine = new ConsumeGenerator("ship-engine") {{
+        shipEngine = new ImpactReactor("ship-engine") {{
             localizedName = "Ship Engine";
             description = "Massive engine for large ships, uses diesel or heavy fuel oil for extreme power. Requires huge amountsof power for startup.";
 
             requirements(Category.power, with(
-                    MTItems.ironIngot, 400,
-                    MTItems.aluminiumIngot, 250,
-                    MTItems.steelIngot, 200,
-                    Items.copper, 600,
-                    Items.lead, 250,
-                    Items.silicon, 400,
-                    Items.graphite, 300,
-                    Items.metaglass, 40
+                    MTItems.ironIngot, 750,
+                    MTItems.steelIngot, 1000,
+                    Items.copper, 900,
+                    Items.lead, 500,
+                    Items.silicon, 800,
+                    Items.graphite, 400,
+                    Items.plastanium, 300,
+                    Items.titanium, 400,
+                    MTItems.t1Composite, 250
             ));
 
             size = 8;
@@ -1135,7 +1140,7 @@ public class MTBlocks {
                     Items.copper, 20 ));
             ammo(
                             MTItems.ap762, new BasicBulletType(3.64f, 1){{
-                            lifetime = 110;
+                            lifetime = 70;
                             hitSize = 1;
                             width = 1;
                             height = 2;
