@@ -2,9 +2,7 @@ package militarytechnology.content;
 
 import arc.graphics.Color;
 import arc.struct.Seq;
-import militarytechnology.world.blocks.crafting.CraftPlan;
 import militarytechnology.world.blocks.distribution.MTAmmoBelt;
-import militarytechnology.type.MTAmmoAssembler;
 import mindustry.content.Fx;
 import mindustry.content.Items;
 import mindustry.content.Liquids;
@@ -27,7 +25,9 @@ import mindustry.world.draw.DrawFlame;
 import mindustry.world.draw.DrawMulti;
 import mindustry.world.meta.Attribute;
 
-import static militarytechnology.content.MTItems.ap762;
+import multicraft.*;
+
+import static militarytechnology.content.MTItems.*;
 import static mindustry.type.ItemStack.with;
 
 public class MTBlocks {
@@ -46,7 +46,7 @@ public class MTBlocks {
         t1wall, t1wallL, t2wall, t2wallL, t3wall, t3wallL,
 
         //transport
-        ammoBeltS, ammoBeltM, ammoBeltL, ammoBeltA,
+        beltC, beltB, beltA, beltAN,
 
         //power
         dieselGeneratorS, dieselGenerator, locomotiveEngine, shipEngine,
@@ -326,7 +326,7 @@ public class MTBlocks {
             consumePower(80f / 60f);
         }};
 
-        ammoAssembler1 = new MTAmmoAssembler("ammo-assembler-1") {{
+        ammoAssembler1 = new MultiCrafter("ammo-assembler-1") {{
             localizedName = "Autocannon Ammunition Assembler";
             description = "Assembles various machinegun ammunition types using raw materials.";
             requirements(Category.crafting, with(
@@ -338,44 +338,92 @@ public class MTBlocks {
             size = 3;
             hasPower = true;
             hasItems = true;
-            craftTime = 30f;
             itemCapacity = 50;
             craftEffect = Fx.pulverize;
 
-            plans = Seq.with(
-                    new CraftPlan(
-                            with(MTItems.propellant, 1, MTItems.casingAlloy, 2, Items.copper, 1, Items.lead, 2),
-                            new ItemStack(ap762, 10)
-                    ),
-                    new CraftPlan(
-                            with(MTItems.propellant, 1, MTItems.casingAlloy, 3, Items.copper, 1, Items.lead, 2),
-                            new ItemStack(MTItems.ap127, 10)
-                    ),
-                    new CraftPlan(
-                            with(MTItems.propellant, 1, MTItems.casingAlloy, 3, Items.blastCompound, 1, Items.copper, 1),
-                            new ItemStack(MTItems.he127, 10)
-                    ),
-                    new CraftPlan(
-                            with(MTItems.propellant, 2, MTItems.casingAlloy, 4, Items.copper, 2, Items.lead, 2),
-                            new ItemStack(MTItems.ap20, 10)
-                    ),
-                    new CraftPlan(
-                            with(MTItems.propellant, 2, MTItems.casingAlloy, 4, Items.blastCompound, 1, Items.copper, 2),
-                            new ItemStack(MTItems.he20, 10)
-                    ),
-                    new CraftPlan(
-                            with(MTItems.propellant, 2, MTItems.casingAlloy, 6, Items.copper, 3, Items.lead, 3),
-                            new ItemStack(MTItems.ap35, 10)
-                    ),
-                    new CraftPlan(
-                            with(MTItems.propellant, 2, MTItems.casingAlloy, 6, Items.blastCompound, 2, Items.copper, 4),
-                            new ItemStack(MTItems.he35, 10)
-                    ));
+            resolvedRecipes = Seq.with(
 
-            consumePower(40f / 60f);
-        }};
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 1, MTItems.casingAlloy, 2, Items.copper, 1, Items.lead, 2)),
+                                Seq.with()
+                                );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.ap762, 10)),
+                                Seq.with()
+                        );
+                        craftTime = 30f;
+                    }},
+                    new Recipe(){{
+                input = new IOEntry(
+                        Seq.with(ItemStack.with(MTItems.propellant, 1, MTItems.casingAlloy, 3, Items.copper, 1, Items.lead, 2)),
+                        Seq.with()
+                );
+                output = new IOEntry(
+                        Seq.with(ItemStack.with(MTItems.ap127, 10)),
+                        Seq.with()
+                );
+                craftTime = 60f;
+            }},
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 1, MTItems.casingAlloy, 3, Items.blastCompound, 1, Items.copper, 1)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.he127, 10)),
+                                Seq.with()
+                        );
+                        craftTime = 60f;
+                    }},
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 2, MTItems.casingAlloy, 4, Items.copper, 2, Items.lead, 2)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.ap20, 10)),
+                                Seq.with()
+                        );
+                        craftTime = 60f;
+                    }},
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 2, MTItems.casingAlloy, 4, Items.blastCompound, 1, Items.copper, 2)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.he20, 10)),
+                                Seq.with()
+                        );
+                        craftTime = 60f;
+                    }},
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 2, MTItems.casingAlloy, 6, Items.copper, 3, Items.lead, 3)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.ap35, 10)),
+                                Seq.with()
+                        );
+                        craftTime = 60f;
+                    }},
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 2, MTItems.casingAlloy, 6, Items.blastCompound, 2, Items.copper, 4)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.he35, 10)),
+                                Seq.with()
+                        );
+                        craftTime = 60f;
+                    }});
+                    consumePower(40f / 60f);
+                }};
 
-        ammoAssembler2 = new MTAmmoAssembler("ammo-assembler-2") {{
+        ammoAssembler2 = new MultiCrafter("ammo-assembler-2") {{
             localizedName = "Medium Caliber Ammunition Assembler";
             description = "Assembles various medium caliber ammunition using more refined materials.";
             requirements(Category.crafting, with(
@@ -387,48 +435,104 @@ public class MTBlocks {
             size = 3;
             hasPower = true;
             hasItems = true;
-            craftTime = 60f;
             itemCapacity = 60;
             craftEffect = Fx.pulverize;
 
-            plans = Seq.with(
-                    new CraftPlan(
-                            with(MTItems.propellant, 3, MTItems.casingAlloy, 6, MTItems.ironIngot, 1, Items.lead, 3),
-                            new ItemStack(MTItems.ap37, 5)
-                    ),
-                    new CraftPlan(
-                            with(MTItems.propellant, 2, MTItems.casingAlloy, 6, Items.blastCompound, 1, MTItems.ironIngot, 2),
-                            new ItemStack(MTItems.he37, 5)
-                    ),
-                    new CraftPlan(
-                            with(MTItems.propellant, 4, MTItems.casingAlloy, 8, MTItems.ironIngot, 2, Items.lead, 5),
-                            new ItemStack(MTItems.ap50, 5)
-                    ),
-                    new CraftPlan(
-                            with(MTItems.propellant, 3, MTItems.casingAlloy, 8, Items.blastCompound, 3, MTItems.ironIngot, 2),
-                            new ItemStack(MTItems.he50, 5)
-                    ),
-                    new CraftPlan(
-                            with(MTItems.propellant, 5, MTItems.casingAlloy, 10, MTItems.ironIngot, 3, Items.lead, 6),
-                            new ItemStack(MTItems.ap76, 5)
-                    ),
-                    new CraftPlan(
-                            with(MTItems.propellant, 4, MTItems.casingAlloy, 10, Items.blastCompound, 4, MTItems.ironIngot, 4),
-                            new ItemStack(MTItems.he76, 5)
-                    ),
-                    new CraftPlan(
-                            with(MTItems.propellant, 6, MTItems.casingAlloy, 14, MTItems.ironIngot, 5, Items.lead, 6),
-                            new ItemStack(MTItems.ap90, 5)
-                    ),
-                    new CraftPlan(
-                            with(MTItems.propellant, 5, MTItems.casingAlloy, 14, Items.blastCompound, 8, MTItems.ironIngot, 6),
-                            new ItemStack(MTItems.he90, 5)
-                    ));
+            resolvedRecipes = Seq.with(
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 3, MTItems.casingAlloy, 6, MTItems.ironIngot, 1, Items.lead, 3)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.ap37, 5)),
+                                Seq.with()
+                        );
+                        craftTime = 60f;
+                    }},
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 2, MTItems.casingAlloy, 6, Items.blastCompound, 1, MTItems.ironIngot, 2)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.he37, 5)),
+                                Seq.with()
+                        );
+                        craftTime = 60f;
+                    }},
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 4, MTItems.casingAlloy, 8, MTItems.ironIngot, 2, Items.lead, 5)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.ap50, 5)),
+                                Seq.with()
+                        );
+                        craftTime = 60f;
+                    }},
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 3, MTItems.casingAlloy, 8, Items.blastCompound, 3, MTItems.ironIngot, 2)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.he50, 5)),
+                                Seq.with()
+                        );
+                        craftTime = 60f;
+                    }},
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 5, MTItems.casingAlloy, 10, MTItems.ironIngot, 3, Items.lead, 6)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.ap76, 5)),
+                                Seq.with()
+                        );
+                        craftTime = 90f;
+                    }},
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 4, MTItems.casingAlloy, 10, Items.blastCompound, 4, MTItems.ironIngot, 4)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.he76, 5)),
+                                Seq.with()
+                        );
+                        craftTime = 90f;
+                    }},
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 6, MTItems.casingAlloy, 14, MTItems.ironIngot, 5, Items.lead, 6)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.ap90, 5)),
+                                Seq.with()
+                        );
+                        craftTime = 120f;
+                    }},
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 5, MTItems.casingAlloy, 14, Items.blastCompound, 8, MTItems.ironIngot, 6)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.he90, 5)),
+                                Seq.with()
+                        );
+                        craftTime = 120f;
+                    }}
+            );
 
             consumePower(1f);
         }};
 
-        ammoAssembler3 = new MTAmmoAssembler("ammo-assembler-3") {{
+        ammoAssembler3 = new MultiCrafter("ammo-assembler-3") {{
             localizedName = "Large Caliber Ammunition Assembler";
             description = "Assembles various Large caliber ammunition using more refined materials.";
             requirements(Category.crafting, with(
@@ -440,32 +544,60 @@ public class MTBlocks {
             size = 4;
             hasPower = true;
             hasItems = true;
-            craftTime = 180f;
             itemCapacity = 80;
             craftEffect = Fx.pulverize;
 
-            plans = Seq.with(
-                    new CraftPlan(
-                            with(MTItems.propellant, 12, MTItems.casingAlloy, 20, MTItems.steelIngot, 10),
-                            new ItemStack(MTItems.ap105, 5)
-                    ),
-                    new CraftPlan(
-                            with(MTItems.propellant, 10, MTItems.casingAlloy, 20, Items.blastCompound, 10, MTItems.steelIngot, 5, MTItems.aluminiumIngot, 2),
-                            new ItemStack(MTItems.he105, 5)
-                    ),
-                    new CraftPlan(
-                            with(MTItems.propellant, 18, MTItems.casingAlloy, 26, MTItems.steelIngot, 14),
-                            new ItemStack(MTItems.ap120, 5)
-                    ),
-                    new CraftPlan(
-                            with(MTItems.propellant, 14, MTItems.casingAlloy, 26, Items.blastCompound, 14, MTItems.steelIngot, 8, MTItems.aluminiumIngot, 4),
-                            new ItemStack(MTItems.he120, 5)
-                    ));
+            resolvedRecipes = Seq.with(
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 12, MTItems.casingAlloy, 20, MTItems.steelIngot, 10)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.ap105, 5)),
+                                Seq.with()
+                        );
+                        craftTime = 180f;
+                    }},
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 10, MTItems.casingAlloy, 20, Items.blastCompound, 10, MTItems.steelIngot, 5, MTItems.aluminiumIngot, 2)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.he105, 5)),
+                                Seq.with()
+                        );
+                        craftTime = 180f;
+                    }},
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 18, MTItems.casingAlloy, 26, MTItems.steelIngot, 14)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.ap120, 5)),
+                                Seq.with()
+                        );
+                        craftTime = 180f;
+                    }},
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 14, MTItems.casingAlloy, 26, Items.blastCompound, 14, MTItems.steelIngot, 8, MTItems.aluminiumIngot, 4)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.he120, 5)),
+                                Seq.with()
+                        );
+                        craftTime = 180f;
+                    }}
+            );
 
             consumePower(1.5f);
         }};
 
-        ammoAssemblerA = new MTAmmoAssembler("ammo-assembler-a") {{
+        ammoAssemblerA = new MultiCrafter("ammo-assembler-a") {{
             localizedName = "Large Caliber Ammunition Assembler";
             description = "Assembles various Large caliber ammunitions using more refined materials.";
             requirements(Category.crafting, with(
@@ -477,29 +609,49 @@ public class MTBlocks {
             size = 4;
             hasPower = true;
             hasItems = true;
-            craftTime = 480f;
             itemCapacity = 160;
             craftEffect = Fx.pulverize;
 
-            plans = Seq.with(
-                    new CraftPlan(
-                            with(MTItems.propellant, 12, MTItems.casingAlloy, 46, Items.blastCompound, 20, MTItems.ironIngot, 12, Items.copper, 6),
-                            new ItemStack(MTItems.he155, 5)
-                    ),
-                    new CraftPlan(
-                            with(MTItems.propellant, 18, MTItems.casingAlloy, 60, Items.blastCompound, 28, MTItems.ironIngot, 16, Items.copper, 10),
-                            new ItemStack(MTItems.he203, 5)
-                    ),
-                    new CraftPlan(
-                            with(MTItems.propellant, 24, MTItems.casingAlloy, 80, Items.blastCompound, 40, MTItems.ironIngot, 21, Items.copper, 18),
-                            new ItemStack(MTItems.he155, 5)
-                    )
+            resolvedRecipes = Seq.with(
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 12, MTItems.casingAlloy, 46, Items.blastCompound, 20, MTItems.ironIngot, 12, Items.copper, 6)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.he155, 5)),
+                                Seq.with()
+                        );
+                        craftTime = 360f;
+                    }},
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 18, MTItems.casingAlloy, 60, Items.blastCompound, 28, MTItems.ironIngot, 16, Items.copper, 10)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.he203, 5)),
+                                Seq.with()
+                        );
+                        craftTime = 480f;
+                    }},
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 24, MTItems.casingAlloy, 80, Items.blastCompound, 40, MTItems.ironIngot, 21, Items.copper, 18)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.he155, 5)),
+                                Seq.with()
+                        );
+                        craftTime = 660f;
+                    }}
             );
 
             consumePower(1.5f);
         }};
 
-        ammoAssemblerM1 = new MTAmmoAssembler("ammo-assembler-m1") {{
+        ammoAssemblerM1 = new MultiCrafter("ammo-assembler-m1") {{
             localizedName = "Advanced Ammunition Assembler 1";
             description = "Assembles various advanced ammunition using advanced materials. Assembles APDS, APCR and HEAT-FS";
             requirements(Category.crafting, with(
@@ -513,44 +665,93 @@ public class MTBlocks {
             size = 3;
             hasPower = true;
             hasItems = true;
-            craftTime = 240f;
             itemCapacity = 80;
             craftEffect = Fx.pulverize;
 
-            plans = Seq.with(
-                    new CraftPlan(
-                            with(MTItems.propellant, 3, MTItems.casingAlloy, 6, MTItems.steelIngot, 3, MTItems.aluminiumIngot, 2),
-                            new ItemStack(MTItems.apds35, 5)
-                    ),
-                    new CraftPlan(
-                            with(MTItems.propellant, 8, MTItems.casingAlloy, 11, MTItems.steelIngot, 6, MTItems.aluminiumIngot, 4),
-                            new ItemStack(MTItems.apds76, 5)
-                    ),
-                    new CraftPlan(
-                            with(MTItems.propellant, 6, MTItems.casingAlloy, 11, Items.blastCompound, 3, MTItems.aluminiumIngot, 8, Items.copper, 1),
-                            new ItemStack(MTItems.heatfs76, 5)
-                    ),
-                    new CraftPlan(
-                            with(MTItems.propellant, 10, MTItems.casingAlloy, 16, MTItems.steelIngot, 8, MTItems.ironIngot, 5),
-                            new ItemStack(MTItems.apcr90, 5)
-                    ),
-                    new CraftPlan(
-                            with(MTItems.propellant, 7, MTItems.casingAlloy, 16, Items.blastCompound, 6, MTItems.aluminiumIngot, 10, Items.copper, 2),
-                            new ItemStack(MTItems.heatfs90, 5)
-                    ),
-                    new CraftPlan(
-                            with(MTItems.propellant, 14, MTItems.casingAlloy, 22, Items.blastCompound, 10, MTItems.aluminiumIngot, 15, Items.copper, 3),
-                            new ItemStack(MTItems.heatfs105, 5)
-                    ),
-                    new CraftPlan(
-                            with(MTItems.propellant, 18, MTItems.casingAlloy, 30, Items.blastCompound, 14, MTItems.aluminiumIngot, 18, Items.copper, 5),
-                            new ItemStack(MTItems.heatfs120, 5)
-                    ));
+            resolvedRecipes = Seq.with(
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 3, MTItems.casingAlloy, 6, MTItems.steelIngot, 3, MTItems.aluminiumIngot, 2)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.apds35, 5)),
+                                Seq.with()
+                        );
+                        craftTime = 180f;
+                    }},
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 8, MTItems.casingAlloy, 11, MTItems.steelIngot, 6, MTItems.aluminiumIngot, 4)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.apds76, 5)),
+                                Seq.with()
+                        );
+                        craftTime = 240f;
+                    }},
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 6, MTItems.casingAlloy, 11, Items.blastCompound, 3, MTItems.aluminiumIngot, 8, Items.copper, 1)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.heatfs76, 5)),
+                                Seq.with()
+                        );
+                        craftTime = 240f;
+                    }},
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 10, MTItems.casingAlloy, 16, MTItems.steelIngot, 8, MTItems.ironIngot, 5)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.apcr90, 5)),
+                                Seq.with()
+                        );
+                        craftTime = 270f;
+                    }},
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 7, MTItems.casingAlloy, 16, Items.blastCompound, 6, MTItems.aluminiumIngot, 10, Items.copper, 2)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.heatfs90, 5)),
+                                Seq.with()
+                        );
+                        craftTime = 270f;
+                    }},
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 14, MTItems.casingAlloy, 22, Items.blastCompound, 10, MTItems.aluminiumIngot, 15, Items.copper, 3)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.heatfs105, 5)),
+                                Seq.with()
+                        );
+                        craftTime = 300f;
+                    }},
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 18, MTItems.casingAlloy, 30, Items.blastCompound, 14, MTItems.aluminiumIngot, 18, Items.copper, 5)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.heatfs120, 5)),
+                                Seq.with()
+                        );
+                        craftTime = 300f;
+                    }}
+            );
 
             consumePower(1.5f);
         }};
 
-        ammoAssemblerM2 = new MTAmmoAssembler("ammo-assembler-m2") {{
+        ammoAssemblerM2 = new MultiCrafter("ammo-assembler-m2") {{
             localizedName = "Advanced Ammunition Assembler 2";
             description = "Assembles advanced APFSDS ammunition using expensive materials.";
             requirements(Category.crafting, with(
@@ -564,28 +765,55 @@ public class MTBlocks {
             size = 4;
             hasPower = true;
             hasItems = true;
-            craftTime = 330f;
             itemCapacity = 80;
             craftEffect = Fx.pulverize;
 
-
-            plans = Seq.with(
-                    new CraftPlan(
-                            with(MTItems.propellant, 20, MTItems.casingAlloy, 22, MTItems.tungstenRod, 5, MTItems.aluminiumIngot, 12),
-                            new ItemStack(MTItems.apfsds105, 5)
-                    ),
-                    new CraftPlan(
-                            with(MTItems.propellant, 26, MTItems.casingAlloy, 24, MTItems.depletedThorium, 5, MTItems.tungstenRod, 3),
-                            new ItemStack(MTItems.apfsds2_105, 5)
-                    ),
-                    new CraftPlan(
-                            with(MTItems.propellant, 24, MTItems.casingAlloy, 30, MTItems.tungstenRod, 10, MTItems.aluminiumIngot, 16),
-                            new ItemStack(MTItems.apfsds120, 5)
-                    ),
-                    new CraftPlan(
-                            with(MTItems.propellant, 30, MTItems.casingAlloy, 32, MTItems.depletedThorium, 10, MTItems.tungstenRod, 6),
-                            new ItemStack(MTItems.apfsds2_120, 5)
-                    ));
+            resolvedRecipes = Seq.with(
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 20, MTItems.casingAlloy, 22, MTItems.tungstenRod, 5, MTItems.aluminiumIngot, 12)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.apfsds105, 5)),
+                                Seq.with()
+                        );
+                        craftTime = 270f;
+                    }},
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 26, MTItems.casingAlloy, 24, MTItems.depletedThorium, 5, MTItems.tungstenRod, 3)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.apfsds2_105, 5)),
+                                Seq.with()
+                        );
+                        craftTime = 330f;
+                    }},
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 24, MTItems.casingAlloy, 30, MTItems.tungstenRod, 10, MTItems.aluminiumIngot, 16)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.apfsds120, 5)),
+                                Seq.with()
+                        );
+                        craftTime = 300f;
+                    }},
+                    new Recipe(){{
+                        input = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.propellant, 30, MTItems.casingAlloy, 32, MTItems.depletedThorium, 10, MTItems.tungstenRod, 6)),
+                                Seq.with()
+                        );
+                        output = new IOEntry(
+                                Seq.with(ItemStack.with(MTItems.apfsds2_120, 5)),
+                                Seq.with()
+                        );
+                        craftTime = 360f;
+                    }}
+            );
 
             consumePower(2f);
         }};
@@ -735,58 +963,58 @@ public class MTBlocks {
             health = 800 * wallHealthMultiplier * 4;
             armor = 60f;
             size = 2;
-            chanceDeflect = 1f;
+            chanceDeflect = 0.85f;
             flashHit = true;
             absorbLasers = true;
-            lightningChance = 0.1f;
+            lightningChance = 0.65F;
             schematicPriority = 10;
         }};
 
         //endregion
         //region distribution
 
-        ammoBeltS = new MTAmmoBelt("ammo-belt-s", Seq.with(
+        beltC = new MTAmmoBelt("ammo-belt-c", Seq.with(
                 ap762, MTItems.ap127, MTItems.he127, MTItems.ap20, MTItems.he20, MTItems.ap35, MTItems.he35, MTItems.apds35
         )) {{
-            localizedName = "Ammunition Belt class-S";
-            description = "A compact conveyor belt designed to transport small-caliber ammunition efficiently.";
+            localizedName = "Conveyor Belt class-C";
+            description = "An upgraded version of the standard conveyor using iron, cheapest stack-conveyor.";
             requirements(Category.distribution, with(MTItems.ironIngot, 1, Items.copper, 1));
-            health = 40;
-            speed = 8f / 60f;
-            itemCapacity = 100;
+            health = 60;
+            speed = 2f / 60f;
+            itemCapacity = 10;
         }};
 
-        ammoBeltM = new MTAmmoBelt("ammo-belt-m", Seq.with(
+        beltB = new MTAmmoBelt("ammo-belt-b", Seq.with(
                 MTItems.ap35, MTItems.he35, MTItems.apds35, MTItems.ap37, MTItems.he37, MTItems.ap50, MTItems.he50, MTItems.ap76, MTItems.he76, MTItems.apds76, MTItems.heatfs76, MTItems.ap90, MTItems.he90, MTItems.apcr90, MTItems.heatfs90
         )) {{
-            localizedName = "Ammunition Belt class-M";
-            description = "A sturdy conveyor belt built to handle medium-caliber ammunition, from 35mm up to 90mm rounds.";
+            localizedName = "Ammunition Belt class-B";
+            description = "A sturdy conveyor belt built to handle more items.";
             requirements(Category.distribution, with(MTItems.ironIngot, 2, Items.copper, 2));
-            health = 80;
-            speed = 6f / 60f;
-            itemCapacity = 50;
+            health = 120;
+            speed = 4f / 60f;
+            itemCapacity = 20;
         }};
 
-        ammoBeltL = new MTAmmoBelt("ammo-belt-l", Seq.with(
+        beltA = new MTAmmoBelt("ammo-belt-a", Seq.with(
                 MTItems.ap105, MTItems.he105, MTItems.apfsds105, MTItems.apfsds2_105, MTItems.heatfs105, MTItems.ap120, MTItems.he120, MTItems.apfsds120, MTItems.apfsds2_120, MTItems.heatfs120, MTItems.he155
         )) {{
-            localizedName = "Ammunition Belt class-L";
-            description = "Heavy-duty ammo belt designed for the large rounds, efficiently transporting 105mm to 155mm shells with strong durability.";
+            localizedName = "Ammunition Belt class-A";
+            description = "Heavy-duty conveyor belt designed for the large amount of items, efficiently transporting large batches of ammunition for turrets.";
             requirements(Category.distribution, with(MTItems.ironIngot, 5, Items.copper, 10));
-            health = 130;
+            health = 240;
             speed = 6f / 60f;
-            itemCapacity = 25;
+            itemCapacity = 40;
         }};
 
-        ammoBeltA = new MTAmmoBelt("ammo-belt-a", Seq.with(
+        beltAN = new MTAmmoBelt("ammo-belt-an", Seq.with(
                 MTItems.he203, MTItems.he305
         )) {{
             localizedName = "Ammunition Belt class-A/N";
-            description = "Heavy-duty ammo belt designed for the largest calibers, efficiently transporting 203mm to 305mm shells with high survivability";
-            requirements(Category.distribution, with(MTItems.ironIngot, 5, Items.copper, 10));
-            health = 240;
-            speed = 3f / 60f;
-            itemCapacity = 10;
+            description = "Ultimate conveyor, built for heavy defences in the frontlines plus exceptional item capacity.";
+            requirements(Category.distribution, with(MTItems.ironIngot, 5, Items.copper, 10, steelIngot, 5));
+            health = 480;
+            speed = 12f / 60f;
+            itemCapacity = 80;
         }};
 
         //endregion
