@@ -1,10 +1,7 @@
 package militarytechnology;
 
 import arc.util.Log;
-import militarytechnology.content.MTBlocks;
-import militarytechnology.content.MTItems;
-import militarytechnology.content.MTLiquids;
-import militarytechnology.content.MTStatusEffects;
+import militarytechnology.content.*;
 import mindustry.mod.Mod;
 
 public class MilitaryTechnology extends Mod {
@@ -20,6 +17,6 @@ public class MilitaryTechnology extends Mod {
         MTLiquids.load();
         MTStatusEffects.load();
         MTBlocks.load();
-    }
 
+    }
 }

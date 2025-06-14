@@ -6,7 +6,7 @@ import mindustry.type.Item;
 public class MTItems {
 
     public static Item ironRaw, ironIngot, steelIngot, bauxite, aluminiumIngot, casingAlloy, tungstenRaw, tungstenRod,
-            depletedThorium, enrichedThorium, tarItem, t1Composite, t2Composite, t3Composite,
+            depletedThorium, enrichedThorium, bitumen, t1Composite, t2Composite, t3Composite,
             propellant, ap762, ap127, he127, ap20, he20, ap35, he35, apds35, ap37, he37, ap50, he50, ap76, he76,
             apds76, heatfs76, ap90, he90, apcr90, heatfs90, ap105, he105, apfsds105, apfsds2_105,
             heatfs105, ap120, he120, apfsds120, apfsds2_120, heatfs120, he155, he203, he305;
@@ -82,11 +82,11 @@ public class MTItems {
             buildable = false;
         }};
 
-        tarItem = new Item("tar-Item", Color.valueOf("000000")) {{
-            localizedName = "Tar";
-            description = "Sticky and flammable liquid solid enough to be transported on conveyors.";
-            explosiveness = 0.95f;
-            flammability = 0.6f;
+        bitumen = new Item("bitumen", Color.valueOf("000000")) {{
+            localizedName = "Bitumen";
+            description = "Dark-colored, semi-solid to hard, sticky hydrocarbon mixtures obtained during the processing of crude oil. Used as binding material for roads.";
+            explosiveness = 0.9f;
+            flammability = 0.4f;
             buildable = false;
         }};
 

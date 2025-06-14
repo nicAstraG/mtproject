@@ -6,8 +6,12 @@ import militarytechnology.world.blocks.distribution.MTAmmoBelt;
 import mindustry.content.Fx;
 import mindustry.content.Items;
 import mindustry.content.Liquids;
+import mindustry.content.StatusEffects;
 import mindustry.entities.bullet.BasicBulletType;
+import mindustry.entities.bullet.FlakBulletType;
+import mindustry.entities.pattern.ShootAlternate;
 import mindustry.gen.Sounds;
+import mindustry.graphics.Pal;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
 import mindustry.type.LiquidStack;
@@ -39,12 +43,15 @@ public class MTBlocks {
 
         //crafting
         oilRefinery, ironFurnace, ironSmeltery, aluminiumSmeltery, arcFurnace, radioactiveCentrifuge, steelForge,
-        casingSmelter, propellantMixer, ammoAssembler1, ammoAssembler2, ammoAssembler3, ammoAssemblerA, ammoAssemblerM1,
+        casingSmelter, propellantMixer, heMixer, ammoAssembler1, ammoAssembler2, ammoAssembler3, ammoAssemblerA, ammoAssemblerM1,
         ammoAssemblerM2, t1CompositeAssembler, t2CompositeAssembler, t3CompositeAssembler,
 
         //defence
 
-        t1wall, t1wallL, t2wall, t2wallL, t3wall, t3wallL,
+        ironWall, ironWallL, roadBlock, steelWall, steelWallL, t1wall, t1wallL, t2wall, t2wallL, t3wall, t3wallL,
+
+        //liquid
+        pipe, pulsePipe, pipeRouter, pipeJunction, undPipeline,
 
         //transport
         beltC, beltB, beltA, beltAN,
@@ -53,7 +60,10 @@ public class MTBlocks {
         dieselGeneratorS, dieselGenerator, locomotiveEngine, shipEngine,
 
         //turrets
-        m1919a4, m2hb, polsten, m168, oerlikonkda, m6, kwk39, m1, m32, m3, t15e2, m41, t5e1, m68a1e8, m58, m256, m185, mark5508, mark75012;
+        m1919a4, m2hb, polsten, m168, oerlikonkda, m6, kwk39, m1, m32, m3, t15e2, m41, t5e1, m68a1e8, m58, m256, m185, mark125508, mark075012,
+
+        //units
+        t1TFabricator, t2TFabricator, t3TFabricator, t4TFabricator, t5TFabricator, t6TFabricator, sFabricator;
 
     public static void load() {
 
@@ -105,11 +115,11 @@ public class MTBlocks {
                     MTLiquids.lubricant, 16f / 60f
             );
 
-            outputItem = new ItemStack(MTItems.tarItem, 2);
+            outputItem = new ItemStack(MTItems.bitumen, 1);
             liquidOutputDirections = new int[]{1, 2, 3};
 
             size = 3;
-            craftTime = 60f;
+            craftTime = 120f;
 
             hasPower = true;
             hasItems = true;
@@ -303,7 +313,7 @@ public class MTBlocks {
 
             consumeItems(with(MTItems.aluminiumIngot, 1, Items.lead, 1, Items.copper, 1, Items.silicon, 1));
             consumeLiquid(Liquids.water, 6f / 60f);
-            consumePower(260f / 60f);
+            consumePower(160f / 60f);
         }};
 
         propellantMixer = new GenericCrafter("propellant-mixer") {{
@@ -330,6 +340,31 @@ public class MTBlocks {
             consumePower(80f / 60f);
         }};
 
+        heMixer = new GenericCrafter("he-mixer"){{
+            localizedName = "High-Explosive Mixer";
+            description = "Mixes a combination of chemical compounds to create blast compound.";
+            requirements(Category.crafting, with(
+                    MTItems.ironIngot, 60,
+                    Items.copper, 100,
+                    Items.lead, 60,
+                    Items.silicon, 80
+            ));
+
+            craftEffect = Fx.pulverize;
+            outputItem = new ItemStack(Items.blastCompound, 2);
+            craftTime = 90f;
+            size = 2;
+            hasPower = true;
+            hasItems = true;
+            hasLiquids = true;
+            itemCapacity = 20;
+            liquidCapacity = 10;
+
+            consumeItems(with(bitumen, 2, Items.lead, 1));
+            consumeLiquid(Liquids.oil, 4f / 60f);
+            consumePower(100f / 60f);
+        }};
+
         ammoAssembler1 = new MultiCrafter("ammo-assembler-1") {{
             localizedName = "Autocannon Ammunition Assembler";
             description = "Assembles various machinegun ammunition types using raw materials.";
@@ -353,7 +388,7 @@ public class MTBlocks {
                                 Seq.with()
                                 );
                         output = new IOEntry(
-                                Seq.with(ItemStack.with(MTItems.ap762, 10)),
+                                Seq.with(ItemStack.with(MTItems.ap762, 1)),
                                 Seq.with()
                         );
                         craftTime = 30f;
@@ -364,7 +399,7 @@ public class MTBlocks {
                         Seq.with()
                 );
                 output = new IOEntry(
-                        Seq.with(ItemStack.with(MTItems.ap127, 10)),
+                        Seq.with(ItemStack.with(MTItems.ap127, 1)),
                         Seq.with()
                 );
                 craftTime = 60f;
@@ -375,7 +410,7 @@ public class MTBlocks {
                                 Seq.with()
                         );
                         output = new IOEntry(
-                                Seq.with(ItemStack.with(MTItems.he127, 10)),
+                                Seq.with(ItemStack.with(MTItems.he127, 1)),
                                 Seq.with()
                         );
                         craftTime = 60f;
@@ -386,7 +421,7 @@ public class MTBlocks {
                                 Seq.with()
                         );
                         output = new IOEntry(
-                                Seq.with(ItemStack.with(MTItems.ap20, 10)),
+                                Seq.with(ItemStack.with(MTItems.ap20, 1)),
                                 Seq.with()
                         );
                         craftTime = 60f;
@@ -397,7 +432,7 @@ public class MTBlocks {
                                 Seq.with()
                         );
                         output = new IOEntry(
-                                Seq.with(ItemStack.with(MTItems.he20, 10)),
+                                Seq.with(ItemStack.with(MTItems.he20, 1)),
                                 Seq.with()
                         );
                         craftTime = 60f;
@@ -408,7 +443,7 @@ public class MTBlocks {
                                 Seq.with()
                         );
                         output = new IOEntry(
-                                Seq.with(ItemStack.with(MTItems.ap35, 10)),
+                                Seq.with(ItemStack.with(MTItems.ap35, 1)),
                                 Seq.with()
                         );
                         craftTime = 60f;
@@ -419,7 +454,7 @@ public class MTBlocks {
                                 Seq.with()
                         );
                         output = new IOEntry(
-                                Seq.with(ItemStack.with(MTItems.he35, 10)),
+                                Seq.with(ItemStack.with(MTItems.he35, 1)),
                                 Seq.with()
                         );
                         craftTime = 60f;
@@ -679,7 +714,7 @@ public class MTBlocks {
                                 Seq.with()
                         );
                         output = new IOEntry(
-                                Seq.with(ItemStack.with(MTItems.apds35, 5)),
+                                Seq.with(ItemStack.with(MTItems.apds35, 1)),
                                 Seq.with()
                         );
                         craftTime = 180f;
@@ -901,6 +936,53 @@ public class MTBlocks {
 
         int wallHealthMultiplier = 4;
 
+        ironWall = new Wall("iron-wall"){{
+            localizedName = "Iron Wall";
+            description = "Sturdy wall made from refined iron.";
+            requirements(Category.defense, with(MTItems.ironIngot, 6));
+            health = 100 * wallHealthMultiplier;
+            schematicPriority = 10;
+        }};
+
+        ironWallL = new Wall("iron-wall-l"){{
+            localizedName = "Large Iron Wall";
+            description = "Large wall made from refined iron.";
+            requirements(Category.defense, ItemStack.mult(ironWall.requirements, 4));
+            size = 2;
+            health = 100 * wallHealthMultiplier * 4;
+            schematicPriority = 10;
+        }};
+
+        roadBlock = new Wall("road-block"){{
+            localizedName = "Roadblock";
+            description = "Specialized iron & steel structure designed to block cars, trucks and tanks to advance.";
+            requirements(Category.defense, with(ironIngot, 12, steelIngot, 4));
+            size = 2;
+            health = 250 * wallHealthMultiplier;
+            armor = 6f;
+        }};
+
+        steelWall = new Wall("steel-wall"){{
+            localizedName = "Steel Wall";
+            description = "High durability wall made of steel. High hardness increases the chance of deflecting incoming bullets.";
+            requirements(Category.defense, with(MTItems.steelIngot, 6));
+            health = 180 * wallHealthMultiplier;
+            armor = 14f;
+            chanceDeflect = 2f;
+            schematicPriority = 10;
+        }};
+
+        steelWallL = new Wall("steel-wall-l"){{
+            localizedName = "Large Steel Wall";
+            description = "Larger wall variant made of steel.";
+            requirements(Category.defense, ItemStack.mult(ironWall.requirements, 4));
+            size = 2;
+            health = 180 * wallHealthMultiplier * 4;
+            armor = 14f;
+            chanceDeflect = 2f;
+            schematicPriority = 10;
+        }};
+
         t1wall = new Wall("t1-wall") {{
             localizedName = "Plastic Composite Wall";
             description = "Lightweight yet sturdy defensive wall made from plastic composite and titanium.";
@@ -911,7 +993,7 @@ public class MTBlocks {
             schematicPriority = 10;
         }};
 
-        t1wallL = new Wall("t1-wall-large") {{
+        t1wallL = new Wall("t1-wall-l") {{
             localizedName = "Large Plastic Composite Wall";
             description = "Larger and tougher variant offering enhanced durability.";
             requirements(Category.defense, ItemStack.mult(t1wall.requirements, 4));
@@ -934,7 +1016,7 @@ public class MTBlocks {
             schematicPriority = 10;
         }};
 
-        t2wallL = new Wall("t2-wall-large") {{
+        t2wallL = new Wall("t2-wall-l") {{
             localizedName = "Large Titanium Composite Wall";
             description = "A formidable large wall variant offering greater durability and a chance to deflect incoming bullets.";
             requirements(Category.defense, ItemStack.mult(t2wall.requirements, 4));
@@ -960,7 +1042,7 @@ public class MTBlocks {
             schematicPriority = 10;
         }};
 
-        t3wallL = new Wall("t3-wall-large") {{
+        t3wallL = new Wall("t3-wall-l") {{
             localizedName = "Large MBT Armour Composite Wall";
             description = "The ultimate large wall. It completely blocks laser damage and reflects incoming bullets, making it nearly impervious against most heavy attacks.";
             requirements(Category.defense, ItemStack.mult(t2wall.requirements, 4));
@@ -1134,18 +1216,17 @@ public class MTBlocks {
 
         m1919a4 = new ItemTurret("m1919a4"){{
             localizedName = "M1919A4 Machinegun Turret";
-            description = "Reliable light machine gun turret effective against both air and ground targets. It boasts a fast firing rate and moderate range, ideal for suppressing lightly armored enemies. Requires water or lubricant for enhanced firing speed.";
+            description = "Reliable light machine gun turret effective against both air and ground targets. It boasts a fast firing rate and moderate range, ideal for suppressing lightly armored enemies.";
             requirements(Category.turret, with(
                 MTItems.ironIngot, 15,
                     Items.copper, 20 ));
             ammo(
-                            MTItems.ap762, new BasicBulletType(3.64f, 1){{
-                            lifetime = 70;
+                            MTItems.ap762, new BasicBulletType(4f, 4){{
+                            lifetime = 80;
+                            buildingDamageMultiplier = 0.15f;
                             hitSize = 1;
                             width = 1;
                             height = 2;
-                            pierce = true;
-                            pierceCap = 1;
                             collidesAir = true;
                             collidesGround = true;
                             hittable = true;
@@ -1155,7 +1236,7 @@ public class MTBlocks {
                             lightRadius = 0.8F;
                             lightOpacity = 0.3F;
                             lightColor = Color.valueOf("fbd367ff");
-                            ammoMultiplier = 1F;
+                            ammoMultiplier = 10F;
                         }}
                     );
                     reload = 7.2f;
@@ -1166,6 +1247,415 @@ public class MTBlocks {
                     targetAir = true;
                     targetGround = true;
 
-        }
+        }};
 
-    };}}
+        m2hb = new ItemTurret("m2hb"){{
+            localizedName = "M2HB .50cal Turret";
+            description = "Heavy machine gun turret with improved damage and range over lighter models. Effective against both air and ground units, with armor-piercing and explosive rounds for versatility.";
+            requirements(Category.turret, with(
+                    MTItems.ironIngot, 40,
+                    Items.copper, 20 ));
+            ammo(
+                    MTItems.ap127, new BasicBulletType(4.25f, 17){{
+                        lifetime = 100f;
+                        buildingDamageMultiplier = 0.15f;
+                        hitSize = 1;
+                        width = 1;
+                        height = 3;
+                        collidesAir = true;
+                        collidesGround = true;
+                        hittable = true;
+                        reflectable = true;
+                        absorbable = true;
+                        hitColor = Color.valueOf("ffffffff");
+                        lightRadius = 0.8F;
+                        lightOpacity = 0.3F;
+                        lightColor = Color.valueOf("fbd367ff");
+                        ammoMultiplier = 10F;
+                    }},
+
+                    MTItems.he127, new FlakBulletType(4.2f, 5){
+                        {
+                            lifetime = 100f;
+                            splashDamage = 3f;
+                            splashDamageRadius = 6f;
+                            explodeRange = 4f;
+                            buildingDamageMultiplier = 0.15f;
+                            scaledSplashDamage = true;
+                            knockback = 0.18f;
+                            hitSize = 1f;
+                            width = 1f;
+                            height = 3f;
+                            status = StatusEffects.blasted;
+                            statusDuration = 120f;
+                            collidesAir = true;
+                            collidesGround = true;
+                            hittable = true;
+                            reflectable = true;
+                            absorbable = true;
+                            hitColor = Color.valueOf("ffa637ff");
+                            lightRadius = 0.8f;
+                            lightOpacity = 0.3f;
+                            lightColor = Color.valueOf("ffa637ff");
+                            fragBullet = new BasicBulletType(4f, 1) {{
+                                width = 1f;
+                                height = 2f;
+                                lifetime = 1f;
+                                backColor = Pal.gray;
+                                frontColor = Color.white;
+                                despawnEffect = Fx.none;
+                            }};
+                            fragBullets = 3;
+                            fragRandomSpread = 270f;
+                            fragVelocityMin = 3.6f;
+                            fragVelocityMax = 7.2f;
+                            ammoMultiplier = 10F;
+                        }});
+            reload = 6.5f;
+            inaccuracy = 2;
+            range = 280;
+            rotateSpeed = 6f;
+            maxAmmo = 300;
+            targetAir = true;
+            targetGround = true;
+        }};
+
+        polsten = new ItemTurret("polsten"){{
+            localizedName = "20mm Polsten";
+            description = "Anti-air autocannon with moderate damage and explosive capability. Uses 20mm AP and HE rounds.";
+            size = 2;
+            requirements(Category.turret, with(
+                    MTItems.ironIngot, 100,
+                    Items.copper, 60,
+                    Items.graphite, 50
+            ));
+            ammo(
+                    MTItems.ap20, new BasicBulletType(4.2f, 32){{
+                        lifetime = 100f;
+                        buildingDamageMultiplier = 0.15f;
+                        hitSize = 2f;
+                        width = 2f;
+                        height = 5f;
+                        collidesAir = true;
+                        collidesGround = false;
+                        hittable = true;
+                        reflectable = true;
+                        absorbable = true;
+                        hitColor = Color.valueOf("ffffffff");
+                        lightRadius = 1f;
+                        lightOpacity = 0.3f;
+                        lightColor = Color.valueOf("fbd367ff");
+                        ammoMultiplier = 10F;
+                    }},
+
+                    MTItems.he20, new FlakBulletType(3.8f, 9){{
+                        lifetime = 100f;
+                        splashDamage = 10f;
+                        splashDamageRadius = 6f;
+                        explodeRange = 8f;
+                        buildingDamageMultiplier = 0.15f;
+                        scaledSplashDamage = true;
+                        knockback = 0.1f;
+                        hitSize = 2f;
+                        width = 2f;
+                        height = 5f;
+                        status = StatusEffects.blasted;
+                        statusDuration = 240f;
+                        collidesAir = true;
+                        collidesGround = false;
+                        hittable = true;
+                        reflectable = true;
+                        absorbable = true;
+                        hitColor = Color.valueOf("ffa637ff");
+                        lightRadius = 1f;
+                        lightOpacity = 0.35f;
+                        lightColor = Color.valueOf("ffa637ff");
+                        fragBullet = new BasicBulletType(5f, 3){{
+                            width = 1f;
+                            height = 2f;
+                            lifetime = 1f;
+                            backColor = Pal.gray;
+                            frontColor = Color.white;
+                            despawnEffect = Fx.none;
+                        }};
+                        fragBullets = 3;
+                        fragRandomSpread = 360f;
+                        fragVelocityMin = 3.8f;
+                        fragVelocityMax = 7.6f;
+                        ammoMultiplier = 10F;
+                    }}
+            );
+
+            shoot = new ShootAlternate(4f + 3f);
+            reload = 4f;
+            inaccuracy = 3f;
+            range = 320f;
+            rotateSpeed = 3f;
+            maxAmmo = 200;
+            targetAir = true;
+            targetGround = false;
+        }};
+
+        m168 = new ItemTurret("m168"){{
+            localizedName = "20mm M168";
+            description = "High-rate autocannon capable of targeting air, ground, and incoming projectiles. Uses AP and HE rounds. Cooled in bursts to prevent overheating.";
+            size = 2;
+            requirements(Category.turret, with(
+                    MTItems.ironIngot, 120,
+                    MTItems.aluminiumIngot, 50,
+                    Items.titanium, 60
+            ));
+
+            ammo(
+                    MTItems.ap20, new BasicBulletType(5f, 44){{
+                        lifetime = 120f;
+                        buildingDamageMultiplier = 0.15f;
+                        hitSize = 2f;
+                        width = 2f;
+                        height = 5f;
+                        collidesAir = true;
+                        collidesGround = true;
+                        hittable = true;
+                        reflectable = true;
+                        absorbable = true;
+                        hitColor = Color.valueOf("ffffffff");
+                        lightRadius = 1f;
+                        lightOpacity = 0.3f;
+                        lightColor = Color.valueOf("fbd367ff");
+                        ammoMultiplier = 10F;
+                    }},
+
+                    MTItems.he20, new FlakBulletType(4.6f, 11){{
+                        lifetime = 120f;
+                        splashDamage = 10f;
+                        splashDamageRadius = 6f;
+                        explodeRange = 8f;
+                        buildingDamageMultiplier = 0.15f;
+                        scaledSplashDamage = true;
+                        knockback = 0.23f;
+                        hitSize = 2f;
+                        width = 2f;
+                        height = 5f;
+                        status = StatusEffects.blasted;
+                        statusDuration = 240f;
+                        collidesAir = true;
+                        collidesGround = true;
+                        hittable = true;
+                        reflectable = true;
+                        absorbable = true;
+                        hitColor = Color.valueOf("ffa637ff");
+                        lightRadius = 1f;
+                        lightOpacity = 0.35f;
+                        lightColor = Color.valueOf("ffa637ff");
+
+                        fragBullets = 4;
+                        fragRandomSpread = 360f;
+                        fragVelocityMin = 4.6f;
+                        fragVelocityMax = 9.2f;
+                        fragBullet = new BasicBulletType(4f, 3){{
+                            width = 3f;
+                            height = 8f;
+                            lifetime = 1f;
+                            backColor = Pal.gray;
+                            frontColor = Color.white;
+                            despawnEffect = Fx.none;
+                        }};
+                        ammoMultiplier = 10F;
+                    }}
+            );
+            reload = 1.2f;
+            inaccuracy = 5f;
+            range = 400f;
+            rotateSpeed = 1f;
+            maxAmmo = 1200;
+            targetAir = true;
+            targetGround = true;
+            consumePower(0.6f);
+        }};
+
+        oerlikonkda = new ItemTurret("oerlikonkda"){{
+            localizedName = "35mm OerlikonKDA Anti-Air-Defence-System";
+            description = "Dedicated anti-air autocannon with versatile ammo options for engaging air and ground targets. High damage APDS rounds excel against armored ground units, while HE and AP rounds provide effective area suppression of fast-moving aerial threats.";
+            size = 3;
+            requirements(Category.turret, with(
+                    MTItems.t1Composite, 120,
+                    Items.silicon, 200,
+                    Items.titanium, 300,
+                    Items.copper, 180,
+                    Items.metaglass, 90,
+                    steelIngot, 180,
+                    ironIngot, 200
+            ));
+            ammo(
+                    MTItems.ap35, new BasicBulletType(6.25f, 143){{
+                        lifetime = 150f;
+                        buildingDamageMultiplier = 0.15f;
+                        hitSize = 3.5f;
+                        width = 3.5f;
+                        height = 8f;
+                        collidesAir = true;
+                        collidesGround = true;
+                        hittable = true;
+                        reflectable = true;
+                        absorbable = true;
+                        pierce = true;
+                        pierceCap = 1;
+                        hitColor = Color.valueOf("ffffffff");
+                        lightRadius = 1f;
+                        lightOpacity = 0.3f;
+                        lightColor = Color.valueOf("fbd367ff");
+                        ammoMultiplier = 10F;
+                    }},
+
+                    MTItems.he35, new FlakBulletType(6f, 21){
+                        {
+                            lifetime = 150f;
+                            splashDamage = 61f;
+                            splashDamageRadius = 8f;
+                            explodeRange = 8f;
+                            buildingDamageMultiplier = 0.15f;
+                            scaledSplashDamage = true;
+                            knockback = 0.23f;
+                            hitSize = 2f;
+                            width = 2f;
+                            height = 5f;
+                            status = StatusEffects.blasted;
+                            statusDuration = 240f;
+                            collidesAir = true;
+                            collidesGround = true;
+                            hittable = true;
+                            reflectable = true;
+                            absorbable = true;
+                            hitColor = Color.valueOf("ffa637ff");
+                            lightRadius = 1f;
+                            lightOpacity = 0.35f;
+                            lightColor = Color.valueOf("ffa637ff");
+
+                            fragBullets = 4;
+                            fragRandomSpread = 360f;
+                            fragVelocityMin = 6f;
+                            fragVelocityMax = 12f;
+
+                            fragBullet = new BasicBulletType(6f, 5) {{
+                                width = 3f;
+                                height = 8f;
+                                lifetime = 1f;
+                                backColor = Pal.gray;
+                                frontColor = Color.white;
+                                despawnEffect = Fx.none;
+                            }};
+                            ammoMultiplier = 10F;
+                        }},
+
+                    MTItems.apds35, new BasicBulletType(7f, 311){{
+                        lifetime = 150f;
+                        buildingDamageMultiplier = 0.15f;
+                        hitSize = 3.5f;
+                        width = 3.5f;
+                        height = 8f;
+                        collidesAir = true;
+                        collidesGround = true;
+                        hittable = true;
+                        reflectable = true;
+                        absorbable = true;
+                        pierce = true;
+                        pierceArmor = true;
+                        pierceBuilding = true;
+                        pierceCap = 1;
+                        hitColor = Color.valueOf("ffffff");
+                        lightRadius = 1f;
+                        lightOpacity = 0.3f;
+                        lightColor = Color.valueOf("03dbfc");
+                        ammoMultiplier = 3F;
+                    }});
+            maxAmmo = 320;
+            targetAir = true;
+            targetGround = true;
+            recoil = 2f;
+            range = 480f;
+            inaccuracy = 1;
+            rotateSpeed = 8f;
+            reload = 3.25f;
+            shoot = new ShootAlternate(16f);
+
+            consumePower(1.2f);
+        }};
+
+        m6 = new ItemTurret("m6"){{
+            localizedName = "37mm M6";
+            description = "Early-game ground turret, great for initial defense with precise, hard-hitting rounds. Best replaced later as stronger options become available.";
+            size = 2;
+            requirements(Category.turret, with(
+                    MTItems.ironIngot, 20,
+                    Items.copper, 30,
+                    Items.lead, 50,
+                    Items.graphite, 20
+            ));
+
+            ammo(
+                    MTItems.ap37, new BasicBulletType(4.44f, 142){{
+                        lifetime = 150f;
+                        buildingDamageMultiplier = 0.15f;
+                        hitSize = 4f;
+                        width = 4f;
+                        height = 10f;
+                        collidesAir = true;
+                        collidesGround = true;
+                        hittable = true;
+                        reflectable = true;
+                        absorbable = true;
+                        pierce = true;
+                        hitColor = Color.valueOf("ffffffff");
+                        lightRadius = 1f;
+                        lightOpacity = 0.3f;
+                        lightColor = Color.valueOf("fbd367ff");
+                        ammoMultiplier = 1F;
+                    }},
+
+                    MTItems.he37, new FlakBulletType(4.3f, 16){{
+                        lifetime = 120f;
+                        splashDamage = 70f;
+                        splashDamageRadius = 8f;
+                        explodeRange = 8f;
+                        buildingDamageMultiplier = 0.15f;
+                        scaledSplashDamage = true;
+                        knockback = 0.23f;
+                        hitSize = 4f;
+                        width = 4f;
+                        height = 10f;
+                        status = StatusEffects.blasted;
+                        statusDuration = 240f;
+                        collidesAir = true;
+                        collidesGround = true;
+                        hittable = true;
+                        reflectable = true;
+                        absorbable = true;
+                        hitColor = Color.valueOf("ffa637ff");
+                        lightRadius = 1f;
+                        lightOpacity = 0.35f;
+                        lightColor = Color.valueOf("ffa637ff");
+
+                        fragBullets = 4;
+                        fragRandomSpread = 360f;
+                        fragVelocityMin = 4.3f;
+                        fragVelocityMax = 8.6f;
+                        fragBullet = new BasicBulletType(4.3f, 4){{
+                            width = 3f;
+                            height = 8f;
+                            lifetime = 1f;
+                            backColor = Pal.gray;
+                            frontColor = Color.white;
+                            despawnEffect = Fx.none;
+                        }};
+                        ammoMultiplier = 1F;
+                    }}
+            );
+            reload = 180f;
+            inaccuracy = 2f;
+            range = 320f;
+            rotateSpeed = 1f;
+            maxAmmo = 18;
+            targetAir = true;
+            targetGround = true;
+        }};
+    }}
